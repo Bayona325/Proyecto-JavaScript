@@ -361,3 +361,69 @@ select:focus {
     grid-template-columns: 1fr;
   }
 }
+
+/* ========== Modal de producto ========== */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.modal.open { display: flex; }
+
+.modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+}
+
+.modal__content {
+  position: relative;
+  background: var(--panel);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  max-width: 800px;
+  width: 90%;
+  padding: 20px;
+  z-index: 101;
+  display: grid;
+  gap: var(--gap);
+}
+
+.modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.modal__body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap);
+}
+
+.modal__img {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.modal__info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal__footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 700px) {
+  .modal__body { grid-template-columns: 1fr; }
+}

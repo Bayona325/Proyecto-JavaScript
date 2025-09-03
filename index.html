@@ -79,5 +79,26 @@
     </template>
 
     <script src="./app.js" defer></script>
-  </body>
+  
+<!-- Modal de detalle de producto -->
+<div id="productModal" class="modal" aria-hidden="true">
+  <div class="modal__overlay"></div>
+  <div class="modal__content">
+    <button id="closeModal" class="icon-btn modal__close" aria-label="Cerrar">✕</button>
+    <div class="modal__body">
+      <img id="modalImg" class="modal__img" alt="" />
+      <div class="modal__info">
+        <h2 id="modalTitle"></h2>
+        <p id="modalCategory" class="muted"></p>
+        <p id="modalDesc"></p>
+        <div class="modal__footer">
+          <span id="modalPrice" class="price"></span>
+          <button id="modalAdd" class="btn-primary">Agregar al carrito</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
 </html>

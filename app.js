@@ -63,7 +63,14 @@ function renderProducts(list) {
 
     btn.addEventListener('click', () => addToCart(p));
 
-    frag.appendChild(node);
+    
+    const card = node.querySelector('.card');
+    card.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('add-to-cart')) {
+        openModal(p);
+      }
+    });
+frag.appendChild(node);
   }
   grid.appendChild(frag);
   grid.setAttribute('aria-busy', 'false');
@@ -234,5 +241,32 @@ function toggleCart(open) {
   panel.setAttribute('aria-hidden', String(!open));
   $('#cartButton').setAttribute('aria-expanded', String(open));
 }
+
+
+// ======= Modal de producto =========
+function openModal(product) {
+  $('#modalImg').src = product.image;
+  $('#modalImg').alt = product.title;
+  $('#modalTitle').textContent = product.title;
+  $('#modalCategory').textContent = product.category;
+  $('#modalDesc').textContent = product.description;
+  $('#modalPrice').textContent = money(product.price);
+
+  $('#modalAdd').onclick = () => addToCart(product);
+
+  $('#productModal').classList.add('open');
+  $('#productModal').setAttribute('aria-hidden', 'false');
+}
+
+function closeModal() {
+  $('#productModal').classList.remove('open');
+  $('#productModal').setAttribute('aria-hidden', 'true');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  $('#closeModal').addEventListener('click', closeModal);
+  document.querySelector('.modal__overlay').addEventListener('click', closeModal);
+});
+
 
 document.addEventListener('DOMContentLoaded', init);
