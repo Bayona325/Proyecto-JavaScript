@@ -63,14 +63,14 @@ function renderProducts(list) {
 
     btn.addEventListener('click', () => addToCart(p));
 
-    
+
     const card = node.querySelector('.card');
     card.addEventListener('click', (e) => {
       if (!e.target.classList.contains('add-to-cart')) {
         openModal(p);
       }
     });
-frag.appendChild(node);
+    frag.appendChild(node);
   }
   grid.appendChild(frag);
   grid.setAttribute('aria-busy', 'false');

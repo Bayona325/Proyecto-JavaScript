@@ -1,104 +1,108 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FakeStore — Demo Completa</title>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <header class="topbar">
-      <h1>🛍️ FakeStore</h1>
-      <div class="controls">
-        <label class="control">
-          <span>Búsqueda</span>
-          <input id="searchInput" type="search" placeholder="Buscar por nombre o descripción…" aria-label="Buscar productos" />
-        </label>
-        <label class="control">
-          <span>Categoría</span>
-          <select id="categoryFilter" aria-label="Filtrar por categoría">
-            <option value="all">Todas</option>
-          </select>
-        </label>
-        <label class="control">
-          <span>Ordenar</span>
-          <select id="sortSelect" aria-label="Ordenar productos">
-            <option value="relevance">Relevancia</option>
-            <option value="price-asc">Precio: menor a mayor</option>
-            <option value="price-desc">Precio: mayor a menor</option>
-            <option value="title-asc">Nombre: A → Z</option>
-            <option value="title-desc">Nombre: Z → A</option>
-          </select>
-        </label>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FakeStore — Demo Completa</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <h1>🛍️ FakeStore</h1>
+    <div class="controls">
+      <label class="control">
+        <span>Búsqueda</span>
+        <input id="searchInput" type="search" placeholder="Buscar por nombre o descripción…"
+          aria-label="Buscar productos" />
+      </label>
+      <label class="control">
+        <span>Categoría</span>
+        <select id="categoryFilter" aria-label="Filtrar por categoría">
+          <option value="all">Todas</option>
+        </select>
+      </label>
+      <label class="control">
+        <span>Ordenar</span>
+        <select id="sortSelect" aria-label="Ordenar productos">
+          <option value="relevance">Relevancia</option>
+          <option value="price-asc">Precio: menor a mayor</option>
+          <option value="price-desc">Precio: mayor a menor</option>
+          <option value="title-asc">Nombre: A → Z</option>
+          <option value="title-desc">Nombre: Z → A</option>
+        </select>
+      </label>
+    </div>
+
+    <button id="cartButton" class="cart-button" aria-controls="cartPanel" aria-expanded="false">
+      🧺 Carrito <span id="cartCount" class="badge">0</span>
+    </button>
+  </header>
+
+  <main class="layout">
+    <section id="productsGrid" class="products" aria-live="polite" aria-busy="true">
+      <!-- Cards renderizadas por JS -->
+    </section>
+
+    <aside id="cartPanel" class="cart" aria-hidden="true" aria-label="Carrito de compras">
+      <div class="cart__header">
+        <h2>Tu Carrito</h2>
+        <button id="closeCart" class="icon-btn" aria-label="Cerrar carrito">✕</button>
       </div>
-
-      <button id="cartButton" class="cart-button" aria-controls="cartPanel" aria-expanded="false">
-        🧺 Carrito <span id="cartCount" class="badge">0</span>
-      </button>
-    </header>
-
-    <main class="layout">
-      <section id="productsGrid" class="products" aria-live="polite" aria-busy="true">
-        <!-- Cards renderizadas por JS -->
-      </section>
-
-      <aside id="cartPanel" class="cart" aria-hidden="true" aria-label="Carrito de compras">
-        <div class="cart__header">
-          <h2>Tu Carrito</h2>
-          <button id="closeCart" class="icon-btn" aria-label="Cerrar carrito">✕</button>
+      <ul id="cartItems" class="cart__items"></ul>
+      <div class="cart__footer">
+        <div class="cart__total">
+          <span>Total:</span>
+          <strong id="cartTotal">$0.00</strong>
         </div>
-        <ul id="cartItems" class="cart__items"></ul>
-        <div class="cart__footer">
-          <div class="cart__total">
-            <span>Total:</span>
-            <strong id="cartTotal">$0.00</strong>
+        <div class="cart__actions">
+          <button id="clearCart" class="btn-outlined">Vaciar</button>
+          <button id="checkout" class="btn-primary">Pagar</button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <template id="productCardTpl">
+    <article class="card">
+      <div class="card__img-wrap">
+        <img class="card__img" alt="" loading="lazy" />
+      </div>
+      <div class="card__body">
+        <h3 class="card__title"></h3>
+        <p class="card__category"></p>
+        <p class="card__desc"></p>
+        <div class="card__footer">
+          <span class="price"></span>
+          <button class="btn-primary add-to-cart">Agregar</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="./app.js" defer></script>
+
+  <!-- Modal de detalle de producto -->
+  <div id="productModal" class="modal" aria-hidden="true">
+    <div class="modal__overlay"></div>
+    <div class="modal__content">
+      <button id="closeModal" class="icon-btn modal__close" aria-label="Cerrar">✕</button>
+      <div class="modal__body">
+        <img id="modalImg" class="modal__img" alt="" />
+        <div class="modal__info">
+          <h2 id="modalTitle"></h2>
+          <p id="modalCategory" class="muted"></p>
+          <p id="modalDesc"></p>
+          <div class="modal__footer">
+            <span id="modalPrice" class="price"></span>
+            <button id="modalAdd" class="btn-primary">Agregar al carrito</button>
           </div>
-          <div class="cart__actions">
-            <button id="clearCart" class="btn-outlined">Vaciar</button>
-            <button id="checkout" class="btn-primary">Pagar</button>
-          </div>
-        </div>
-      </aside>
-    </main>
-
-    <template id="productCardTpl">
-      <article class="card">
-        <div class="card__img-wrap">
-          <img class="card__img" alt="" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <h3 class="card__title"></h3>
-          <p class="card__category"></p>
-          <p class="card__desc"></p>
-          <div class="card__footer">
-            <span class="price"></span>
-            <button class="btn-primary add-to-cart">Agregar</button>
-          </div>
-        </div>
-      </article>
-    </template>
-
-    <script src="./app.js" defer></script>
-  
-<!-- Modal de detalle de producto -->
-<div id="productModal" class="modal" aria-hidden="true">
-  <div class="modal__overlay"></div>
-  <div class="modal__content">
-    <button id="closeModal" class="icon-btn modal__close" aria-label="Cerrar">✕</button>
-    <div class="modal__body">
-      <img id="modalImg" class="modal__img" alt="" />
-      <div class="modal__info">
-        <h2 id="modalTitle"></h2>
-        <p id="modalCategory" class="muted"></p>
-        <p id="modalDesc"></p>
-        <div class="modal__footer">
-          <span id="modalPrice" class="price"></span>
-          <button id="modalAdd" class="btn-primary">Agregar al carrito</button>
         </div>
       </div>
     </div>
   </div>
-</div>
 
 </body>
+
 </html>

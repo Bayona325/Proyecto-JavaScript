@@ -371,12 +371,15 @@ select:focus {
   justify-content: center;
   z-index: 100;
 }
-.modal.open { display: flex; }
+
+.modal.open {
+  display: flex;
+}
 
 .modal__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,.65);
+  background: rgba(0, 0, 0, .65);
 }
 
 .modal__content {
@@ -425,5 +428,7 @@ select:focus {
 }
 
 @media (max-width: 700px) {
-  .modal__body { grid-template-columns: 1fr; }
+  .modal__body {
+    grid-template-columns: 1fr;
+  }
 }
