@@ -180,6 +180,48 @@ function renderCart() {
   $('#cartCount').textContent = cartItemsArr().reduce((n, it) => n + it.qty, 0);
 }
 
+// function saveHistory() {
+//   saveCart();
+//   renderCart();
+// }
+
+function renderCartHistory() {
+  const list = $('#cartItems');
+  list.innerHTML = '';
+
+  const frag = document.createDocumentFragment();
+  for (const it of cartItemsArr()) {
+    const li = document.createElement('li');
+    li.className = 'cart__item';
+
+    li.innerHTML = `
+      <img class="cart__thumb" src="${it.image}" alt="${it.title}" />
+      <div class="cart__meta">
+        <p class="cart__title">${it.title}</p>
+        <div class="cart__price">${money(it.price)}</div>
+      </div>
+    `;
+
+    // eventos de qty
+    const input = $('input[type="number"]', li);
+    const [dec, inc] = $$('button[data-act]', li);
+    dec.addEventListener('click', () => setQty(it.id, (state.cart[it.id]?.qty || 1) - 1));
+    inc.addEventListener('click', () => setQty(it.id, (state.cart[it.id]?.qty || 1) + 1));
+    input.addEventListener('change', () => {
+      const v = Math.max(1, parseInt(input.value || '1', 10));
+      setQty(it.id, v);
+    });
+    $('button[data-act="remove"]', li).addEventListener('click', () => removeFromCart(it.id));
+
+    frag.appendChild(li);
+  }
+  list.appendChild(frag);
+
+  $('#cartTotal').textContent = money(cartTotal());
+  $('#cartCount').textContent = cartItemsArr().reduce((n, it) => n + it.qty, 0);
+}
+
+
 // ======= Cargar categorías =========
 async function loadCategories() {
   const res = await fetch(API + '/categories');
@@ -198,6 +240,7 @@ async function loadCategories() {
 async function init() {
   loadCart();
   renderCart();
+  renderCartHistory();
 
   // eventos UI
   $('#cartButton').addEventListener('click', () => toggleCart(true));
@@ -207,6 +250,7 @@ async function init() {
     alert('Simulación de pago. ¡Gracias por tu compra!');
     state.cart = {}; saveCart(); renderCart();
   });
+  $('#cartButtonHistory').addEventListener('click', () => toggleCart(true));
 
   $('#searchInput').addEventListener('input', debounce((e) => {
     state.query = e.target.value;
